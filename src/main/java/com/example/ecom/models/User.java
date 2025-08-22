@@ -1,10 +1,9 @@
 package com.example.ecom.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -14,4 +13,6 @@ public class User extends BaseModel{
     private String email;
     @Enumerated(EnumType.ORDINAL)
     private UserType userType;
+    @OneToMany
+    List<Address> addresses;
 }
