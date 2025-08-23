@@ -2,7 +2,7 @@ package com.example.ecom.controllers;
 
 import com.example.ecom.dtos.*;
 import com.example.ecom.models.Inventory;
-import com.example.ecom.services.InventoryService;
+import com.example.ecom.services.service_interfaces.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,4 +1,4 @@
-package com.example.ecom.services;
+package com.example.ecom.services.service_interfaces;
 
 import com.example.ecom.exceptions.AddressNotFoundException;
 import com.example.ecom.exceptions.ProductNotFoundException;

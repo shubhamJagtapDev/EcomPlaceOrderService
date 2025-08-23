@@ -10,6 +10,7 @@ import com.example.ecom.models.Product;
 import com.example.ecom.repositories.AddressRepository;
 import com.example.ecom.repositories.DeliveryHubRepository;
 import com.example.ecom.repositories.ProductRepository;
+import com.example.ecom.services.service_interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
     private ShippingTimeEstimationAdaptor shippingTimeEstimationAdaptor;
     private ProductRepository productRepository;
     private AddressRepository addressRepository;

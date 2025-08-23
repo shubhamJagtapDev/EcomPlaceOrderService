@@ -3,29 +3,34 @@ package com.example.ecom.services;
 import com.example.ecom.exceptions.ProductNotFoundException;
 import com.example.ecom.exceptions.UnAuthorizedAccessException;
 import com.example.ecom.exceptions.UserNotFoundException;
-import com.example.ecom.models.Inventory;
-import com.example.ecom.models.Product;
-import com.example.ecom.models.User;
-import com.example.ecom.models.UserType;
+import com.example.ecom.models.*;
 import com.example.ecom.repositories.InventoryRepository;
+import com.example.ecom.repositories.NotificationRepository;
 import com.example.ecom.repositories.ProductRepository;
 import com.example.ecom.repositories.UserRepository;
+import com.example.ecom.services.service_interfaces.InventoryService;
+import com.example.ecom.utils.NotificationSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class InventoryServiceImpl implements InventoryService{
+public class InventoryServiceImpl implements InventoryService {
     private final InventoryRepository inventoryRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
+    private final NotificationSender notificationSender;
 
     @Autowired
-    public InventoryServiceImpl(InventoryRepository inventoryRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public InventoryServiceImpl(InventoryRepository inventoryRepository, ProductRepository productRepository, UserRepository userRepository, NotificationRepository notificationRepository, NotificationSender notificationSender) {
         this.inventoryRepository = inventoryRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
+        this.notificationSender = notificationSender;
     }
 
     @Override
@@ -38,8 +43,13 @@ public class InventoryServiceImpl implements InventoryService{
         inventory.setProduct(product);
         int updatedQuantity = inventory.getQuantity() + quantity;
         inventory.setQuantity(updatedQuantity);
+        inventory = inventoryRepository.save(inventory);
 
-        return inventoryRepository.save(inventory);
+        if(inventory.getQuantity()>0) {
+            Optional<List<Notification>> optionalNotifications = notificationRepository.findNotificationsByProduct_Id(productId);
+            optionalNotifications.ifPresent(notificationSender::sendNotificationViaEmail);
+        }
+        return inventory;
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.example.ecom.dtos.DeliveryEstimateResponseDto;
 import com.example.ecom.dtos.ResponseStatus;
 import com.example.ecom.exceptions.AddressNotFoundException;
 import com.example.ecom.exceptions.ProductNotFoundException;
-import com.example.ecom.services.ProductService;
+import com.example.ecom.services.service_interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
