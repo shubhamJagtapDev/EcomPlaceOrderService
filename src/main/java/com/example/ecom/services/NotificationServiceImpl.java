@@ -40,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
         Optional<Product> productOptional = productRepository.findById(productId);
         if(productOptional.isEmpty()) throw new ProductNotFoundException("Product doesn't exist : productId " + productId);
         // Product in stock or not check
-        Optional<Inventory> productInventoryOptional = inventoryRepository.findByProduct(productOptional.get());
+        Optional<Inventory> productInventoryOptional = inventoryRepository.findByProduct_Id(productOptional.get().getId());
         if (productInventoryOptional.isPresent()) {
             Inventory producInventory = productInventoryOptional.get();
             if (producInventory.getQuantity() > 0) throw new ProductInStockException("Product already in stock : productId " + productId);

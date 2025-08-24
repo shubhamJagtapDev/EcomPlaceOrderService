@@ -15,4 +15,6 @@ public class User extends BaseModel{
     private UserType userType;
     @OneToMany
     List<Address> addresses;
+    @OneToMany
+    private List<Order> orders;
 }
