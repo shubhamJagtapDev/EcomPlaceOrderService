@@ -13,8 +13,8 @@ public class User extends BaseModel{
     private String email;
     @Enumerated(EnumType.ORDINAL)
     private UserType userType;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     List<Address> addresses;
-    @OneToMany
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Order> orders;
 }

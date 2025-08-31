@@ -1,12 +1,14 @@
 package com.example.ecom.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
 @Entity
 public class Address extends BaseModel{
-    private String building;
+    @ManyToOne
+    private User user;private String building;
     private int floor;
     private String roomNo;
     private String street;
