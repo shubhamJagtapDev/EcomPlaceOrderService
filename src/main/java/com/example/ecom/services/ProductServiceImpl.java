@@ -37,22 +37,17 @@ public class ProductServiceImpl implements ProductService {
             AddressNotFoundException
     {
         Optional<Product> productOptional = productRepository.findById(productId);
-        if(productOptional.isEmpty()) {
-            throw new ProductNotFoundException("Product does not exists : product_id " + productId);
-        }
+        throwIfEmpty(productOptional, () -> new ProductNotFoundException("Product does not exists : product_id " + productId));
         Product productData = productOptional.get();
 
         Optional<Address> addressOptional = addressRepository.findById(addressId);
-        if (addressOptional.isEmpty()) {
-            throw new AddressNotFoundException("Invalid address");
-        }
+        throwIfEmpty(addressOptional, () -> new AddressNotFoundException("Invalid address"));
         Address userAddress = addressOptional.get();
 
         Optional<DeliveryHub> deliveryHubOptional = deliveryHubRepository
                                             .findDeliveryHubByAddress_ZipCode(userAddress.getZipCode());
-        if (deliveryHubOptional.isEmpty()) {
-            throw new AddressNotFoundException("Invalid deliveryHub address");
-        }
+
+        throwIfEmpty(deliveryHubOptional, () -> new AddressNotFoundException("Invalid deliveryHub address"));
 
         Location sellerLocation = new Location();
         sellerLocation.setLatitude(productData.getSeller().getAddress().getLatitude());
@@ -75,5 +70,12 @@ public class ProductServiceImpl implements ProductService {
                 (sellerToDeliveryHubTime+deliveryHubToUserTime)*1000L);
 
         return estimatedShippingTime;
+    }
+
+    // Generic method to throw exception if Optional is empty
+    private <T, E extends Exception> void throwIfEmpty(Optional<T> optional, java.util.function.Supplier<E> exceptionSupplier) throws E {
+        if (optional.isEmpty()) {
+            throw exceptionSupplier.get();
+        }
     }
 }
